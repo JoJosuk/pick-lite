@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server";
-export async function POST(request: Request, response: Response) {
+import prisma from "@lib/prisma";
+type ResponseType = {
+  id: number;
+  email: string;
+};
+export async function POST(request: Request) {
   const { email } = await request.json();
-
-  console.log(email);
-  return NextResponse.json({ email });
+  const user = await prisma.user.upsert({
+    where: { email },
+    update: {},
+    create: { email },
+  });
+  let response: ResponseType = { id: user.id, email: user.email };
+  return NextResponse.json(response);
 }
