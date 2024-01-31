@@ -20,7 +20,13 @@ export async function POST(request) {
 
   return NextResponse.json({ status: "ok" });
 }
-
+export async function PUT(request) {
+  const { email, otp } = await request.json();
+  if (otpDict.get(email) == otp) {
+    return NextResponse.json({ status: "ok" });
+  }
+  return NextResponse.json({ status: "not ok" });
+}
 const otpVal = () => {
   const chars =
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
