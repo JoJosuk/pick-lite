@@ -6,20 +6,19 @@ const resend = new Resend(process.env.RESENDAPIKEY);
 const otpDict = new NodeCache();
 export async function POST(request) {
   const { email } = await request.json();
-  //   resend.emails.send({
-  //     from: "onboarding@",
-  //     to: "anzjox@gmail.com",
-  //     subject: "Hello World",
-  //     html: "<p>sending your <strong>first email</strong>!</p>",
-  //   });
-  console.log("sended");
   const otp = otpVal();
   if (otpDict.set(email, otp, 320)) {
-    return NextResponse.json({ status: "ok" });
     console.log(otpDict.get(email));
   }
+  const resultString = `<p> hello your OTP for email verification is </p> <h1>${otp}</h1>`;
+  resend.emails.send({
+    from: "dev@joeljgeorge.tech",
+    to: "joeljoby111@gmail.com",
+    subject: "Hello World",
+    html: resultString,
+  });
 
-  return NextResponse.json({ status: "not ok" });
+  return NextResponse.json({ status: "ok" });
 }
 
 const otpVal = () => {
@@ -29,5 +28,5 @@ const otpVal = () => {
   for (let i = 0; i < 7; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  console.log(result);
+  return result;
 };
