@@ -17,15 +17,16 @@ export async function POST(request) {
     subject: "Hello World",
     html: resultString,
   });
-
+  console.log("email sent");
   return NextResponse.json({ status: "ok" });
 }
 export async function PUT(request) {
   const { email, otp } = await request.json();
+  console.log(otpDict.get(email));
   if (otpDict.get(email) == otp) {
-    return NextResponse.json({ status: "ok" });
+    return NextResponse.json({ status: "success" });
   }
-  return NextResponse.json({ status: "not ok" });
+  return NextResponse.json({ status: "fail" });
 }
 const otpVal = () => {
   const chars =
