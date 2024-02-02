@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import axios from "axios";
-import Link from "next/link";
-
+import Loader from "./components/Loader";
 export default function Home() {
   const [email, setEmail] = useState("");
   const router = useRouter();
+  const [loader, setLoader] = useState(false);
 
   const handleSubmitClick = async () => {
+    setLoader(true);
     const options = {
       method: "post",
       url: "/api/create-user",
@@ -48,8 +49,10 @@ export default function Home() {
 
   return (
     <main>
+      <div className="z-50">{loader && <Loader />}</div>
+
       <div className="w-screen min-h-screen bg-black  flex justify-center items-center ">
-        <div className="lg:w-1/2 bg-white p-4 z-50 rounded-xl pt-10 aspect-[3/2]">
+        <div className="lg:w-1/2 bg-white p-4 z-40  rounded-xl pt-10 aspect-[3/2]">
           <div className="flex justify-center">
             <Image src="pick.svg" width={100} height={80} alt="hello" />
           </div>
