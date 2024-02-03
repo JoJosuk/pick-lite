@@ -11,14 +11,14 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-// import { AcmeLogo } from "./AcmeLogo.jsx";
-
+import PickliteLogo from "./PickliteLogo";
 export default function NavbarNext() {
   return (
     <Navbar>
       <NavbarBrand>
-        {/* <AcmeLogo /> */}
-        <p className="font-bold text-inherit">UIPSES</p>
+        <PickliteLogo />
+
+        <p className="font-bold text-inherit">Pick-Lite</p>
       </NavbarBrand>
 
       <NavbarContent
