@@ -6,7 +6,6 @@ export default function Dashboard() {
     <>
       <div className="w-screen min-h-screen bg-black">
         <NavbarNext />
-        <h1>Dashboard</h1>
       </div>
       <BackgroundBeams />
     </>

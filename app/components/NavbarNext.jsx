@@ -18,7 +18,7 @@ export default function NavbarNext() {
       <NavbarBrand>
         <PickliteLogo />
 
-        <p className="font-bold text-inherit">Pick-Lite</p>
+        <p className="font-bold  text-[#F59E0B] text-xl">Pick-Lite</p>
       </NavbarBrand>
 
       <NavbarContent
