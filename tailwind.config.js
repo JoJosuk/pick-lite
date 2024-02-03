@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
-
+import { nextui } from "@nextui-org/react";
 const colors = require("tailwindcss/colors");
 const {
   default: flattenColorPalette,
@@ -8,6 +8,7 @@ const {
 
 module.exports = {
   content: [
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -24,7 +25,13 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/aspect-ratio"), addVariablesForColors],
+  darkMode: "class",
+
+  plugins: [
+    require("@tailwindcss/aspect-ratio"),
+    addVariablesForColors,
+    nextui(),
+  ],
 };
 function addVariablesForColors({ addBase, theme }) {
   let allColors = flattenColorPalette(theme("colors"));
