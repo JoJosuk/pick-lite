@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 const jwt = require("jsonwebtoken");
 export async function GET(request) {
   const token = request.cookies.get("token");
+  console.log(token);
   if (!token) {
     return NextResponse.json({ status: "fail" });
   }

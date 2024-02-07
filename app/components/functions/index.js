@@ -16,8 +16,7 @@ const dataOptions = {
 const validateUser = async () => {
   const response = await fetch("/api/auth", options);
   const data = await response.json();
-  console.log(data);
-  if (data.status === "fail") {
+  if (data.status == "fail") {
     return false;
   }
   return true;
@@ -25,7 +24,6 @@ const validateUser = async () => {
 const fetchData = async () => {
   const response = await fetch("/api/posts", dataOptions);
   const data = await response.json();
-  console.log(data);
   return data;
 };
 
