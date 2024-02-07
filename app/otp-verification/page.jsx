@@ -24,7 +24,7 @@ export default function OtpPage() {
     };
     const response = await axios(options);
     if (response.data.status === "success") {
-      alert("Logged in successfully");
+      router.push("/dashboard");
     } else {
       alert("Wrong OTP");
     }

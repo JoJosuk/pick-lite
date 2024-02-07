@@ -1,34 +1,38 @@
 "use client";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import NavbarNext from "../components/NavbarNext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import {
+  validateUser,
+  fetchData,
+  fetchTags,
+} from "../components/functions/index";
 export default function Dashboard() {
   const router = useRouter();
-  const options = {
-    method: "get",
-    url: "/api/auth",
-    headers: {
-      "Content-Type": "application/json",
-    },
+  const [resultList, setResultList] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const handleSearchInput = (e) => {
+    setSearchValue(e.target.value);
+    console.log("search value is ", searchValue);
   };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api/auth", options);
-      const data = await response.json();
-      console.log(data);
-      if (data.status === "fail") {
-        router.push("/");
-      }
+    const functionCollection = async () => {
+      if (await !validateUser()) router.push("/");
+      const resultListValues = await fetchData();
+      console.log("result is list ", resultListValues);
+      setResultList(resultListValues);
+      setTags(fetchTags(resultListValues));
     };
-    fetchData();
+    functionCollection();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
       <div className="w-screen min-h-screen bg-black">
-        <NavbarNext />
+        <NavbarNext onSearchInputChange={handleSearchInput} />
       </div>
       <BackgroundBeams />
     </>

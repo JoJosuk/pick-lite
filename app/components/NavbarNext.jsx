@@ -1,4 +1,6 @@
+"use client";
 // eslint-disable-next-line no-unused-vars
+import { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -14,7 +16,12 @@ import {
 } from "@nextui-org/react";
 import PickliteLogo from "./PickliteLogo";
 import SearchIcon from "./SearchIcon";
-export default function NavbarNext() {
+export default function NavbarNext({ onSearchInputChange }) {
+  const [searchValue, setSearchValue] = useState("");
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+    onSearchInputChange(e);
+  };
   return (
     <Navbar className="pb-2">
       <NavbarBrand>
@@ -24,7 +31,7 @@ export default function NavbarNext() {
       </NavbarBrand>
 
       <NavbarContent
-        className="hidden sm:flex gap-4"
+        className="hidden gap-4 sm:flex"
         justify="center"
       ></NavbarContent>
 
@@ -41,6 +48,8 @@ export default function NavbarNext() {
           size="sm"
           startContent={<SearchIcon size={18} />}
           type="search"
+          value={searchValue}
+          onChange={handleInputChange}
         />
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
@@ -55,7 +64,7 @@ export default function NavbarNext() {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
+            <DropdownItem key="profile" className="gap-2 h-14">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>
             </DropdownItem>

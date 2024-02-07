@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@lib/prisma";
+import { cookies } from "next/headers";
+const jwt = require("jsonwebtoken");
 // type RequestBody = {
 //   id: number;
 //   title: string;
@@ -25,10 +27,16 @@ export async function DELETE(request) {
 }
 
 export async function GET(request) {
-  const { id } = { id: 1 };
-  const posts = await prisma.Post.findMany({
-    where: { userId: id },
-    orderBy: { createdAt: "desc" },
-  });
-  return NextResponse.json(posts);
+  try {
+    const token = request.cookies.get("token");
+    const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
+    const id = decoded.id;
+    const posts = await prisma.Post.findMany({
+      where: { userId: id },
+      orderBy: { createdAt: "desc" },
+    });
+    return NextResponse.json(posts);
+  } catch {
+    return NextResponse.json({ status: "fail" });
+  }
 }
