@@ -1,6 +1,7 @@
 "use client";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import NavbarNext from "../components/NavbarNext";
+import Tagbar from "../components/Tagbar";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -13,10 +14,12 @@ export default function Dashboard() {
   const [constResultList, setConstResultList] = useState([]); // eslint-disable-next-line no-unused-vars
   const [resultList, setResultList] = useState([]);
   const [tags, setTags] = useState([]);
+  const [constTags, setConstTags] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInput = (e) => {
     setSearchValue(e.target.value);
   };
+
   useEffect(() => {
     const functionCollection = async () => {
       const checkUserValid = await validateUser();
@@ -25,19 +28,21 @@ export default function Dashboard() {
       console.log("result is list ", resultListValues);
       setResultList(resultListValues);
       setConstResultList(resultListValues);
-      setTags(fetchTags(resultListValues));
+      const getTags = fetchTags(resultListValues);
+      setTags(getTags);
+      setConstTags(getTags);
     };
     functionCollection();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {}, [searchValue]);
   return (
     <>
-      <div className="w-screen min-h-screen bg-black">
+      <div className="z-50 w-screen min-h-screen bg-black">
         <NavbarNext onSearchInputChange={handleSearchInput} />
+        <Tagbar tags={tags} onTagSelect={setTags} />
       </div>
+
       <BackgroundBeams />
     </>
   );
