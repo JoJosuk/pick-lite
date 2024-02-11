@@ -37,13 +37,13 @@ export default function Dashboard() {
 
   useEffect(() => {}, [searchValue]);
   return (
-    <>
-      <div className="z-50 w-screen min-h-screen bg-black">
+    <div>
+      <BackgroundBeams />
+      <div className=" w-screen min-h-screen antialiased">
         <NavbarNext onSearchInputChange={handleSearchInput} />
         <Tagbar tags={tags} onTagSelect={setTags} />
+        <div className="w-1/2 bg-white z-50">hello</div>
       </div>
-
-      <BackgroundBeams />
-    </>
+    </div>
   );
 }
