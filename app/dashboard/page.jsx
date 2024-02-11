@@ -1,9 +1,9 @@
 "use client";
-import { BackgroundBeams } from "../components/ui/background-beams";
 import NavbarNext from "../components/NavbarNext";
 import Tagbar from "../components/Tagbar";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Card from "../components/Card";
 import {
   validateUser,
   fetchData,
@@ -11,7 +11,7 @@ import {
 } from "../components/functions/index";
 export default function Dashboard() {
   const router = useRouter();
-  const [constResultList, setConstResultList] = useState([]); // eslint-disable-next-line no-unused-vars
+  const [constResultList, setConstResultList] = useState([]);
   const [resultList, setResultList] = useState([]);
   const [tags, setTags] = useState([]);
   const [constTags, setConstTags] = useState([]);
@@ -38,11 +38,17 @@ export default function Dashboard() {
   useEffect(() => {}, [searchValue]);
   return (
     <div>
-      <BackgroundBeams />
       <div className=" w-screen min-h-screen antialiased">
         <NavbarNext onSearchInputChange={handleSearchInput} />
         <Tagbar tags={tags} onTagSelect={setTags} />
-        <div className="w-1/2 bg-white z-50">hello</div>
+        <div className="flex z-50 flex-col gap-3 items-center">
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+        </div>
       </div>
     </div>
   );
