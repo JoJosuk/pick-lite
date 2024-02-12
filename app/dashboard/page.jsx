@@ -28,6 +28,7 @@ export default function Dashboard() {
       if (!checkUserValid) {
         console.log("user not valid");
         router.push("/");
+        return;
       }
       const resultListValues = await fetchData();
       console.log("result is list ", resultListValues);
@@ -48,39 +49,40 @@ export default function Dashboard() {
         <NavbarNext onSearchInputChange={handleSearchInput} />
         <Tagbar tags={tags} onTagSelect={setTags} />
         <div className="flex z-50 flex-col gap-3 items-center">
-          {resultList.map((item, index) => (
-            <Card
-              key={index}
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              tags={item.tags}
-              link={item.link}
-            />
-            // <div key={index}>
-            //   <Card
-            //     id={item.id}
-            //     title={item.title}
-            //     description={item.description}
-            //     tags={item.tags}
-            //     link={item.link}
-            //   />
-            //   <Card
-            //     id={item.id}
-            //     title={item.title}
-            //     description={item.description}
-            //     tags={item.tags}
-            //     link={item.link}
-            //   />
-            //   <Card
-            //     id={item.id}
-            //     title={item.title}
-            //     description={item.description}
-            //     tags={item.tags}
-            //     link={item.link}
-            //   />
-            // </div>
-          ))}
+          {resultList &&
+            resultList.map((item, index) => (
+              <Card
+                key={index}
+                id={item.id}
+                title={item.title}
+                description={item.description}
+                tags={item.tags}
+                link={item.link}
+              />
+              // <div key={index}>
+              //   <Card
+              //     id={item.id}
+              //     title={item.title}
+              //     description={item.description}
+              //     tags={item.tags}
+              //     link={item.link}
+              //   />
+              //   <Card
+              //     id={item.id}
+              //     title={item.title}
+              //     description={item.description}
+              //     tags={item.tags}
+              //     link={item.link}
+              //   />
+              //   <Card
+              //     id={item.id}
+              //     title={item.title}
+              //     description={item.description}
+              //     tags={item.tags}
+              //     link={item.link}
+              //   />
+              // </div>
+            ))}
         </div>
       </div>
     </div>

@@ -12,18 +12,38 @@ const jwt = require("jsonwebtoken");
 // };
 export async function POST(request) {
   const { id, title, description, link, tags, userId } = await request.json();
-  await prisma.Post.upsert({
-    where: { id },
-    update: { title, description, link, tags, userId },
-    create: { title, description, link, tags, userId },
-  });
-  return NextResponse.json({ status: "ok" });
+  if (id) {
+    await prisma.Post.upsert({
+      where: { id },
+      update: { title, description, link, tags, userId },
+      create: { title, description, link, tags, userId },
+    });
+    return NextResponse.json({ status: "ok" });
+  } else {
+    try {
+      await prisma.Post.upsert({
+        where: { id },
+        update: { title, description, link, tags, userId },
+        create: { title, description, link, tags, userId },
+      });
+      return NextResponse.json({ status: "ok" });
+    } catch {
+      return NextResponse.json({ status: "fail" });
+    }
+  }
 }
 
 export async function DELETE(request) {
-  const { id } = await request.json();
-  await prisma.Post.delete({ where: { id } });
-  return NextResponse.json({ status: "ok" });
+  try {
+    const { id } = await request.json();
+    const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
+    const user_id = decoded.id;
+    await prisma.Post.delete({ where: { id: id, userId: user_id } });
+    return NextResponse.json({ status: "ok" });
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json({ status: "fail" });
+  }
 }
 
 export async function GET(request) {
