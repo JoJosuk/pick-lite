@@ -15,15 +15,23 @@ export async function POST(request) {
   const token = request.cookies.get("token");
   const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
   const userId = decoded.id;
-  try {
+  console.log("title is  ", title, userId);
+  if (id) {
     await prisma.Post.upsert({
       where: { id },
       update: { title, description, link, tags, userId },
       create: { title, description, link, tags, userId },
     });
     return NextResponse.json({ status: "ok" });
-  } catch {
-    return NextResponse.json({ status: "fail" });
+  } else {
+    try {
+      await prisma.Post.create({
+        data: { title, description, link, tags, userId },
+      });
+      return NextResponse.json({ status: "ok" });
+    } catch {
+      return NextResponse.json({ status: "fail" });
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 "use client";
 // eslint-disable-next-line no-unused-vars
 import { useState } from "react";
+
 import {
   Navbar,
   NavbarBrand,
@@ -14,13 +15,26 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import PickliteLogo from "./PickliteLogo";
 import SearchIcon from "./SearchIcon";
+import axios from "axios";
 export default function NavbarNext({ onSearchInputChange }) {
   const [searchValue, setSearchValue] = useState("");
+  const router = useRouter();
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
     onSearchInputChange(e);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post("/api/logout");
+      console.log(response.data());
+      // router.push("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <Navbar className="pb-2">
@@ -60,21 +74,16 @@ export default function NavbarNext({ onSearchInputChange }) {
               color="secondary"
               name="Jason Hughes"
               size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              src="https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1725655669.jpg"
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="gap-2 h-14">
+            {/* <DropdownItem key="profile" className="gap-2 h-14">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">zoey@example.com</p>
-            </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            </DropdownItem> */}
+
+            <DropdownItem key="logout" color="danger" onClick={handleLogout}>
               Log Out
             </DropdownItem>
           </DropdownMenu>

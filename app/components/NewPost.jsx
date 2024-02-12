@@ -65,7 +65,9 @@ export default function NewPost() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                New Post
+              </ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus
@@ -134,7 +136,7 @@ export default function NewPost() {
                     onClose();
                   }}
                 >
-                  Sign in
+                  Post
                 </Button>
               </ModalFooter>
             </>
