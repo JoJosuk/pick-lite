@@ -11,7 +11,11 @@ const jwt = require("jsonwebtoken");
 //   userId: number;
 // };
 export async function POST(request) {
-  const { id, title, description, link, tags, userId } = await request.json();
+  const { id, title, description, link, tags } = await request.json();
+  const token = request.cookies.get("token");
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
+  const userId = decoded.id;
+  console.log("title is  ", title);
   if (id) {
     await prisma.Post.upsert({
       where: { id },
@@ -36,6 +40,7 @@ export async function POST(request) {
 export async function DELETE(request) {
   try {
     const { id } = await request.json();
+    const token = request.cookies.get("token");
     const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
     const user_id = decoded.id;
     await prisma.Post.delete({ where: { id: id, userId: user_id } });

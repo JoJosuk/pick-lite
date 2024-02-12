@@ -20,7 +20,7 @@ export default function Card({ id, title, description, tags, link }) {
         data: requestBody,
       });
       console.log(response);
-      onClose();
+      // onClose();
     } catch (e) {
       console.log(e);
     }
@@ -80,7 +80,13 @@ export default function Card({ id, title, description, tags, link }) {
                   <Button color="primary" variant="light" onPress={onClose}>
                     Close
                   </Button>
-                  <Button color="danger" onPress={handleClose}>
+                  <Button
+                    color="danger"
+                    onPress={() => {
+                      onClose();
+                      handleClose();
+                    }}
+                  >
                     Action
                   </Button>
                 </ModalFooter>
