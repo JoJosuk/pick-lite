@@ -26,6 +26,7 @@ model Post {
   description   String
   link      String
   tags      String[]
+  imglink   String   @default("")
   createdAt DateTime @default(now())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
