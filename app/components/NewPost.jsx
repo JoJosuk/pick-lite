@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
-export default function NewPost() {
+export default function NewPost({ reloadFunction }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -47,6 +47,7 @@ export default function NewPost() {
       };
       const response = await axios.post("/api/posts", requestBody);
       console.log(response);
+      reloadFunction();
     } catch (e) {
       console.log(e);
     }

@@ -31,7 +31,7 @@ export default function NavbarNext({ onSearchInputChange }) {
     try {
       const response = await axios.post("/api/logout");
       console.log(response.data());
-      // router.push("/");
+      router.push("/");
     } catch (e) {
       console.log(e);
     }

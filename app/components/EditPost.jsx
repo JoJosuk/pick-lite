@@ -56,7 +56,7 @@ export default function EditPost({
   return (
     <>
       <div
-        className="absolute cursor-pointer right-4 bottom-4"
+        className="flex items-center justify-center w-12 transition-colors duration-300 rounded-full cursor-pointer hover:bg-slate-900"
         onClick={onOpen}
       >
         <svg

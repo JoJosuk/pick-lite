@@ -11,6 +11,7 @@ import {
   fetchTags,
 } from "../components/functions/index";
 export default function Dashboard() {
+  const [reload, setReload] = useState(false);
   const router = useRouter();
   const [constResultList, setConstResultList] = useState([]);
   const [resultList, setResultList] = useState([]);
@@ -39,8 +40,11 @@ export default function Dashboard() {
       setConstTags(getTags);
     };
     functionCollection();
-  }, []);
+  }, [reload]);
 
+  const handleReload = () => {
+    setReload(!reload);
+  };
   useEffect(() => {}, [searchValue]);
   return (
     <div className=" w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
@@ -48,7 +52,7 @@ export default function Dashboard() {
       <div className="w-screen min-h-screen antialiased ">
         <NavbarNext onSearchInputChange={handleSearchInput} />
         <Tagbar tags={tags} onTagSelect={setTags} />
-        <NewPost />
+        <NewPost reloadFunction={handleReload} />
         <div className="z-50 flex flex-col items-center gap-3">
           {resultList &&
             resultList.map((item, index) => (
@@ -59,6 +63,7 @@ export default function Dashboard() {
                 description={item.description}
                 tags={item.tags}
                 link={item.link}
+                reloadFunction={handleReload}
               />
               // <div key={index}>
               //   <Card
