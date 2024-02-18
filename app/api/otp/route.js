@@ -15,12 +15,16 @@ export async function POST(request) {
     console.log(otpDict.get(email));
   }
   const resultString = mailContentGenerator(otp);
-  resend.emails.send({
-    from: "dev@joeljgeorge.tech",
-    to: "joeljoby111@gmail.com",
-    subject: `Hello ${username}`,
-    html: resultString,
-  });
+  try {
+    resend.emails.send({
+      from: "dev@joeljgeorge.tech",
+      to: "joeljoby111@gmail.com",
+      subject: `Hello ${username}`,
+      html: resultString,
+    });
+  } catch (e) {
+    console.log("error while sending mail", e);
+  }
   console.log("email sent");
   return NextResponse.json({ status: "ok" });
 }
