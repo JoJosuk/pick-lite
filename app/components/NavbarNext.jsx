@@ -30,7 +30,6 @@ export default function NavbarNext({ onSearchInputChange }) {
   const handleLogout = async () => {
     try {
       const response = await axios.post("/api/logout");
-      console.log(response.data());
       router.push("/");
     } catch (e) {
       console.log(e);
@@ -40,7 +39,6 @@ export default function NavbarNext({ onSearchInputChange }) {
     <Navbar className="pb-2">
       <NavbarBrand>
         <PickliteLogo />
-
         <p className="font-bold  text-[#F59E0B] text-xl">Pick-Lite</p>
       </NavbarBrand>
 

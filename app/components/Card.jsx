@@ -19,6 +19,7 @@ export default function Card({
   description,
   tags,
   link,
+  imglink,
   reloadFunction,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -37,17 +38,17 @@ export default function Card({
   };
   return (
     <div className="relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow min-w-unit-9xl md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-      {/* <img
+      <img
         className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-        src="https://flowbite.com/docs/images/blog/image-4.jpg"
+        src={imglink}
         alt="hey not working image"
-      /> */}
+      />
       {/* <iframe
         className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
         src="https://owl.purdue.edu/owl/general_writing/grammar/using_articles.html"
         title="hey not working image"
       /> */}
-      <ImageFeature link={link} />
+      {/* <ImageFeature link={link} /> */}
 
       <div className="flex flex-col justify-between w-full p-4 leading-normal ">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-[#F59E0B] w-full ">
@@ -101,6 +102,7 @@ export default function Card({
             titleTemp={title}
             descriptionTemp={description}
             tagsTemp={tags}
+            imglink={imglink}
             linkTemp={link}
           />
         </div>

@@ -18,6 +18,7 @@ export default function EditPost({
   descriptionTemp,
   tagsTemp,
   linkTemp,
+  imglink,
 }) {
   const [reload, setReload] = useState(false);
   const [title, setTitle] = useState(titleTemp);
@@ -45,6 +46,7 @@ export default function EditPost({
         title: title,
         description: description,
         link: link,
+        imglink: imglink,
         tags: tags,
       };
       const response = await axios.post("/api/posts", requestBody);

@@ -5,12 +5,15 @@ import NewPost from "../components/NewPost";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Card from "../components/Card";
+import Loader from "app/components/Loader";
+import { TextGenerateEffect } from "app/components/ui/text-generate-effect";
 import {
   validateUser,
   fetchData,
   fetchTags,
 } from "../components/functions/index";
 export default function Dashboard() {
+  const [loader, setLoader] = useState(true);
   const [reload, setReload] = useState(false);
   const router = useRouter();
   const [constResultList, setConstResultList] = useState([]);
@@ -26,6 +29,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const functionCollection = async () => {
+      setLoader(true);
       const checkUserValid = await validateUser();
       console.log("check user valid  ", checkUserValid);
       if (!checkUserValid) {
@@ -40,6 +44,8 @@ export default function Dashboard() {
       const getTags = fetchTags(resultListValues);
       setTags(getTags);
       setConstTags(getTags);
+
+      setLoader(false);
     };
     functionCollection();
   }, [reload]);
@@ -74,50 +80,39 @@ export default function Dashboard() {
     setResultList(filteredList);
   }, [searchValue, tags]);
   return (
-    <div className=" w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
-      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-      <div className="w-screen min-h-screen antialiased ">
-        <NavbarNext onSearchInputChange={handleSearchInput} />
-        <Tagbar tags={constTags} onTagSelect={setTags} />
-        <NewPost reloadFunction={handleReload} />
-        <div className="z-50 flex flex-col items-center gap-3">
-          {Array.isArray(resultList) &&
-            resultList.map((item, index) => (
-              <Card
-                key={index}
-                id={item.id}
-                title={item.title}
-                description={item.description}
-                tags={item.tags}
-                link={item.link}
-                reloadFunction={handleReload}
-              />
-              // <div key={index}>
-              //   <Card
-              //     id={item.id}
-              //     title={item.title}
-              //     description={item.description}
-              //     tags={item.tags}
-              //     link={item.link}
-              //   />
-              //   <Card
-              //     id={item.id}
-              //     title={item.title}
-              //     description={item.description}
-              //     tags={item.tags}
-              //     link={item.link}
-              //   />
-              //   <Card
-              //     id={item.id}
-              //     title={item.title}
-              //     description={item.description}
-              //     tags={item.tags}
-              //     link={item.link}
-              //   />
-              // </div>
-            ))}
+    <>
+      {loader && <Loader />}
+      {!loader && (
+        <div className="overflow-x-hidden w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
+          <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+          <div className="w-screen min-h-screen antialiased ">
+            <NavbarNext onSearchInputChange={handleSearchInput} />
+            <Tagbar tags={constTags} onTagSelect={setTags} />
+            <NewPost reloadFunction={handleReload} />
+            <div className="z-50 flex flex-col items-center gap-3">
+              {Array.isArray(resultList) && resultList.length === 0 && (
+                <TextGenerateEffect
+                  words="No URLs Found Please add more URLs using 'Create New Post' button"
+                  className="text-2xl"
+                />
+              )}
+              {Array.isArray(resultList) &&
+                resultList.map((item, index) => (
+                  <Card
+                    key={index}
+                    id={item.id}
+                    title={item.title}
+                    description={item.description}
+                    tags={item.tags}
+                    link={item.link}
+                    imglink={item.imglink}
+                    reloadFunction={handleReload}
+                  />
+                ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

@@ -43,6 +43,7 @@ export default function NewPost({ reloadFunction }) {
         title: title,
         description: description,
         link: link,
+        imglink: "",
         tags: tags,
       };
       const response = await axios.post("/api/posts", requestBody);
