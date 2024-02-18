@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import NavbarNext from "../components/NavbarNext";
 import Tagbar from "../components/Tagbar";
