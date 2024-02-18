@@ -5,21 +5,23 @@ import prisma from "@lib/prisma";
 const jwt = require("jsonwebtoken");
 import { cookies } from "next/headers";
 const resend = new Resend(process.env.RESENDAPIKEY);
+import mailContentGenerator from "app/components/functions/emailmarkdown";
 const otpDict = new NodeCache();
 export async function POST(request) {
   const { email } = await request.json();
+  const username = email.split("@")[0];
   const otp = otpVal();
   if (otpDict.set(email, otp, 320)) {
     console.log(otpDict.get(email));
   }
-  const resultString = `<p> hello your OTP for email verification is </p> <h1>${otp}</h1>`;
-  //   resend.emails.send({
-  //     from: "dev@joeljgeorge.tech",
-  //     to: "joeljoby111@gmail.com",
-  //     subject: "Hello World",
-  //     html: resultString,
-  //   });
-  //   console.log("email sent");
+  const resultString = mailContentGenerator(otp);
+  resend.emails.send({
+    from: "dev@joeljgeorge.tech",
+    to: "joeljoby111@gmail.com",
+    subject: `Hello ${username}`,
+    html: resultString,
+  });
+  console.log("email sent");
   return NextResponse.json({ status: "ok" });
 }
 export async function PUT(request, response) {
