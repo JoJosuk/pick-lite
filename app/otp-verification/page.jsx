@@ -29,10 +29,11 @@ export default function OtpPage() {
     const response = await axios(options);
     if (response.data.status === "success") {
       router.push("/dashboard");
+      setLoader(true);
     } else {
       alert("Wrong OTP");
+      setLoader(false);
     }
-    setLoader(false);
   };
   useEffect(() => {
     const user = Cookies.get("user");

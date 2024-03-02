@@ -10,6 +10,5 @@ export async function GET(request) {
   return NextResponse.json({ status: "success" });
   //   console.log(token);
   //   const decoded = jwt.verify(token.value, process.env.JWT_SECRET);
-
   //   return NextResponse.json(decoded);
 }

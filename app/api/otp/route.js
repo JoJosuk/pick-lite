@@ -15,19 +15,20 @@ const otpCache = memjs.Client.create(process.env.MEMCACHIER_SERVERS, {
 export async function POST(request) {
   const { email } = await request.json();
   const username = email.split("@")[0];
-  otpCache.set(email, otpVal(), { expires: 300 }, function (err, val) {
+  const otp = otpVal();
+  await otpCache.set(email, otp, { expires: 300 }, function (err, val) {
     if (err) {
       console.log("error setting otp value", err);
     }
   });
-  const otp = otpCache.get(email, function (err, val) {
-    if (err) {
-      console.log("error getting otp value", err);
-    }
-    console.log("otp value and email while creating", val.toString(), email);
-    return val.toString();
-  });
-  // console.log("otpval", otp);
+  // const otp = await otpCache.get(email, function (err, val) {
+  //   if (err) {
+  //     console.log("error getting otp value", err);
+  //   }
+  //   console.log("otp value and email while creating", val.toString(), email);
+  //   return val.toString();
+  // });
+  console.log("otpval", otp);
 
   if (otp) {
     const resultString = mailContentGenerator(otp);
@@ -39,12 +40,14 @@ export async function POST(request) {
         subject: `Hello ${username}`,
         html: resultString,
       });
+      console.log("email sent");
     } catch (e) {
       console.log("error while sending mail", e);
     }
     console.log("email sent");
     return NextResponse.json({ status: "ok" });
   } else {
+    console.log("no otp ");
     return NextResponse.json({ status: "fail" });
   }
 }
