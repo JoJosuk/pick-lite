@@ -15,9 +15,6 @@ export default function OtpPage() {
   const router = useRouter();
 
   const handleChange = (index, value) => {
-    console.log(value);
-    console.log(value.length);
-    console.log(isNaN(value));
     if (value.length == 1) {
       console.log("inside");
       const newOtp = [...otp];
@@ -69,13 +66,13 @@ export default function OtpPage() {
     }
   };
 
-  // useEffect(() => {
-  //   const user = Cookies.get("user");
-  //   if (!user) {
-  //     router.push("/");
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    const user = Cookies.get("user");
+    if (!user) {
+      router.push("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <main>
       <div className="z-50">{loader && <Loader />}</div>
