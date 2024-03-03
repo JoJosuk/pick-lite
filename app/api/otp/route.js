@@ -34,12 +34,12 @@ export async function POST(request) {
     const resultString = mailContentGenerator(otp);
 
     try {
-      resend.emails.send({
-        from: "dev@joeljgeorge.tech",
-        to: "joeljoby111@gmail.com",
-        subject: `Hello ${username}`,
-        html: resultString,
-      });
+      // resend.emails.send({
+      //   from: "dev@joeljgeorge.tech",
+      //   to: "joeljoby111@gmail.com",
+      //   subject: `Hello ${username}`,
+      //   html: resultString,
+      // });
       console.log("email sent");
     } catch (e) {
       console.log("error while sending mail", e);

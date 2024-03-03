@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [constTags, setConstTags] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInput = (e) => {
-    console.log("search value ", e.target.value);
+    // console.log("search value ", e.target.value);
     setSearchValue(e.target.value);
   };
   // const debouncedSearch =
@@ -32,7 +32,7 @@ export default function Dashboard() {
     const functionCollection = async () => {
       setLoader(true);
       const checkUserValid = await validateUser();
-      console.log("check user valid  ", checkUserValid);
+      // console.log("check user valid  ", checkUserValid);
       if (!checkUserValid) {
         console.log("user not valid");
         router.push("/");

@@ -1,19 +1,45 @@
 "use client";
 import Image from "next/image";
 import { BackgroundBeams } from "../components/ui/background-beams";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Loader from "../components/Loader";
 
 export default function OtpPage() {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(["", "", "", ""]);
+  const refs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [loader, setLoader] = useState(false);
+  const buttonRef = useRef(null);
   const router = useRouter();
 
-  const handleSubmitClick = async () => {
+  const handleChange = (index, value) => {
+    console.log(value);
+    console.log(value.length);
+    console.log(isNaN(value));
+    if (value.length == 1) {
+      console.log("inside");
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      if (index < 3) {
+        refs[index + 1].current.focus();
+      }
+    } else if (value.length === 0) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      if (index > 0) {
+        refs[index - 1].current.focus();
+      }
+    }
+  };
+  const handleSubmitClick = async (e) => {
+    e.preventDefault();
+    buttonRef.current.disabled = true;
     setLoader(true);
+    const Otptosend = otp.join("");
     const email = Cookies.get("user");
     const options = {
       method: "put",
@@ -23,7 +49,7 @@ export default function OtpPage() {
       },
       data: {
         email,
-        otp,
+        otp: Otptosend,
       },
     };
     const response = await axios(options);
@@ -33,15 +59,23 @@ export default function OtpPage() {
     } else {
       alert("Wrong OTP");
       setLoader(false);
+      buttonRef.current.disabled = false;
     }
   };
-  useEffect(() => {
-    const user = Cookies.get("user");
-    if (!user) {
-      router.push("/");
+  const handlePaste = (e) => {
+    e.preventDefault();
+    if (e.clipboardData.getData("text").length === 4) {
+      setOtp(e.clipboardData.getData("text").split(""));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
+
+  // useEffect(() => {
+  //   const user = Cookies.get("user");
+  //   if (!user) {
+  //     router.push("/");
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   return (
     <main>
       <div className="z-50">{loader && <Loader />}</div>
@@ -54,29 +88,63 @@ export default function OtpPage() {
             <h1 className="p-2 text-3xl font-medium text-center text-black font-ishtok">
               Pick-lite ➕
             </h1>
-            <div className="flex justify-center py-8">
-              <div className="relative w-2/3 min-w-[200px] h-10 border rounded-md focus-within:border-t-0">
+            <form onSubmit={handleSubmitClick} className="w-full">
+              <div className="flex w-full gap-3 p-3 text-3xl text-center text-black">
                 <input
-                  className="peer w-full h-full text-black bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
-                  placeholder=" "
-                  value={otp}
+                  type="text"
+                  maxLength="1"
+                  className="w-1/4 h-16 bg-white rounded-xl  border-[#F59E0B] border-2 text-center"
+                  value={otp[0]}
+                  ref={refs[0]}
                   onChange={(e) => {
-                    setOtp(e.target.value);
+                    handleChange(0, e.target.value);
                   }}
+                  onPaste={handlePaste}
                 />
-                <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-blue-gray-200 peer-focus:before:!border-gray-900 after:border-blue-gray-200 peer-focus:after:!border-gray-900">
-                  Enter the One Time Password
-                </label>
+                <input
+                  type="text"
+                  maxLength="1"
+                  className="w-1/4 h-16 bg-white rounded-xl  border-[#F59E0B] border-2 text-center"
+                  value={otp[1]}
+                  ref={refs[1]}
+                  onChange={(e) => {
+                    handleChange(1, e.target.value);
+                  }}
+                  onPaste={handlePaste}
+                />
+                <input
+                  type="text"
+                  maxLength="1"
+                  className="w-1/4 h-16 bg-white rounded-xl  border-[#F59E0B] border-2 text-center"
+                  value={otp[2]}
+                  ref={refs[2]}
+                  onChange={(e) => {
+                    handleChange(2, e.target.value);
+                  }}
+                  onPaste={handlePaste}
+                />
+                <input
+                  type="text"
+                  maxLength="1"
+                  className="w-1/4 h-16 bg-white rounded-xl  border-[#F59E0B] border-2 text-center"
+                  value={otp[3]}
+                  ref={refs[3]}
+                  onChange={(e) => {
+                    handleChange(3, e.target.value);
+                  }}
+                  onPaste={handlePaste}
+                />
               </div>
-            </div>
-            <div className="flex justify-center p-10">
-              <button
-                onClick={handleSubmitClick}
-                className="px-12 py-4 rounded-full bg-[#F59E0B] font-bold text-white tracking-widest uppercase transform hover:scale-105 hover:bg-[rgb(255,193,85)] transition-colors duration-200"
-              >
-                Log IN
-              </button>
-            </div>
+              <div className="flex justify-center p-10">
+                <button
+                  type="submit"
+                  ref={buttonRef}
+                  className="px-12 py-4 rounded-full bg-[#F59E0B] font-bold text-white tracking-widest uppercase transform hover:scale-105 hover:bg-[rgb(255,193,85)] transition-colors duration-200"
+                >
+                  Log IN
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
